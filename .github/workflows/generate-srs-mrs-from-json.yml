@@ -1,0 +1,123 @@
+name: Generate SRS and MRS from JSON
+
+on:
+  schedule:
+    - cron: "0 3 */3 * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - "json/*.json"
+      - ".github/workflows/generate-srs-mrs-from-json.yml"
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash --noprofile --norc -euo pipefail {0}
+
+jobs:
+  generate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl jq
+          bash <(curl -fsSL https://sing-box.app/deb-install.sh)
+          curl -fsSL "https://github.com/MetaCubeX/mihomo/releases/download/v1.19.23/mihomo-linux-amd64-compatible-v1.19.23.gz" \
+            | gzip -dc > ./mihomo
+          sudo mv ./mihomo /usr/local/bin/mihomo
+          sudo chmod +x /usr/local/bin/mihomo
+
+      - name: Generate srs and mrs from existing json files
+        run: |
+          mkdir -p json srs mrs
+          find srs -maxdepth 1 -type f -name '*.srs' -delete
+          find mrs -maxdepth 1 -type f -name '*.yaml' -delete
+          find mrs -maxdepth 1 -type f -name '*.mrs' -delete
+
+          shopt -s nullglob
+          json_files=(json/*.json)
+          if [ "${#json_files[@]}" -eq 0 ]; then
+            echo "No json files found in json/ directory."
+            exit 0
+          fi
+
+          for json_file in "${json_files[@]}"; do
+            name="$(basename "$json_file" .json)"
+            srs_out="srs/${name}.srs"
+            domain_mrs_out="mrs/${name}-domain.mrs"
+            ipcidr_mrs_out="mrs/${name}-ipcidr.mrs"
+            domain_src="$(mktemp)"
+            ipcidr_src="$(mktemp)"
+
+            sing-box rule-set compile "$json_file" -o "$srs_out"
+            test -s "$srs_out"
+
+            {
+              echo "payload:"
+              jq -r '
+                def toarr: if . == null then [] elif (type=="array") then . else [.] end;
+                (
+                  [.. | objects | .domain? | select(.) | toarr[]] +
+                  [.. | objects | .domain_suffix? | select(.) | toarr[] | "+." + ltrimstr(".")]
+                )
+                | unique[]
+              ' "$json_file" | sed 's/^/- /'
+            } > "$domain_src"
+
+            {
+              echo "payload:"
+              jq -r '
+                def toarr: if . == null then [] elif (type=="array") then . else [.] end;
+                [.. | objects | .ip_cidr? | select(.) | toarr[] |
+                 (tostring |
+                  if test("/") then .
+                  elif test(":") then . + "/128"
+                  else . + "/32"
+                  end)]
+                | unique[]
+              ' "$json_file" | sed 's/^/- /'
+            } > "$ipcidr_src"
+
+            if [ "$(grep -c '^- ' "$domain_src" || true)" -gt 0 ]; then
+              mihomo convert-ruleset domain yaml "$domain_src" "$domain_mrs_out"
+              test -s "$domain_mrs_out"
+            fi
+
+            if [ "$(grep -c '^- ' "$ipcidr_src" || true)" -gt 0 ]; then
+              mihomo convert-ruleset ipcidr yaml "$ipcidr_src" "$ipcidr_mrs_out"
+              test -s "$ipcidr_mrs_out"
+            fi
+
+            rm -f "$domain_src" "$ipcidr_src"
+            echo "Generated: $json_file -> $srs_out"
+          done
+
+      - name: Show generated files
+        run: |
+          ls -lah srs
+          ls -lah mrs
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add -A srs mrs
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore: regenerate srs and mrs from json"
+          git push
