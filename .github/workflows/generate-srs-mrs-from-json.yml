@@ -124,3 +124,4 @@ jobs:
 
           git commit -m "chore: regenerate srs and mrs from json"
           git push
+
