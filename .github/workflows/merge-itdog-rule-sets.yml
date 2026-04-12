@@ -19,6 +19,7 @@ env:
   JSON_DIR: json
   SRS_DIR: srs
   MRS_DIR: mrs
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 defaults:
   run:
@@ -200,12 +201,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add \
-            "${{ env.JSON_DIR }}/itdog-combined.json" \
-            "${{ env.SRS_DIR }}/itdog-combined.srs" \
-            "${{ env.MRS_DIR }}/itdog-combined.yaml" \
-            "${{ env.MRS_DIR }}/itdog-combined-domain.mrs" \
-            "${{ env.MRS_DIR }}/itdog-combined-ipcidr.mrs"
+          git add -A "${{ env.JSON_DIR }}" "${{ env.SRS_DIR }}" "${{ env.MRS_DIR }}"
 
           if git diff --cached --quiet; then
             echo "No changes, skipping commit."
