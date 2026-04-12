@@ -9,6 +9,10 @@ on:
       - "json/*.json"
       - ".github/workflows/generate-srs-mrs-from-json.yml"
 
+concurrency:
+  group: ruleset-write-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -123,5 +127,15 @@ jobs:
           fi
 
           git commit -m "chore: regenerate srs and mrs from json"
-          git push
 
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            echo "Push rejected (attempt ${attempt}), rebasing onto origin/${GITHUB_REF_NAME}..."
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase "origin/${GITHUB_REF_NAME}"
+          done
+
+          echo "Failed to push after 3 attempts."
+          exit 1
