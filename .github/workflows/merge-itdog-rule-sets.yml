@@ -196,6 +196,9 @@ jobs:
           test -s "${{ env.MRS_DIR }}/itdog-combined-domain.mrs"
           test -s "${{ env.MRS_DIR }}/itdog-combined-ipcidr.mrs"
 
+      - name: Wait 30 seconds before commit/push
+        run: sleep 30
+
       - name: Commit & push (only if changed)
         run: |
           git config user.name  "github-actions[bot]"
