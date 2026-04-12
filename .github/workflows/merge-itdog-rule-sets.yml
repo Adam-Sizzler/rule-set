@@ -210,3 +210,4 @@ jobs:
 
           git commit -m "chore: update itdog combined rule-set"
           git push
+
