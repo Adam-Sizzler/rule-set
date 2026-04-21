@@ -7,6 +7,11 @@ on:
   push:
     paths:
       - "json/*.json"
+      - "srs/*.srs"
+      - "mrs/*.mrs"
+      - "mrs/*.yaml"
+      - "README.md"
+      - "scripts/generate-readme.py"
       - "scripts/singbox-json-to-mihomo-yaml.py"
       - ".github/workflows/generate-srs-mrs-from-json.yml"
 
@@ -140,6 +145,8 @@ jobs:
             echo "Generated: $json_file -> $srs_out"
           done
 
+          python3 scripts/generate-readme.py
+
       - name: Show generated files
         run: |
           ls -lah srs
@@ -150,7 +157,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add -A srs mrs
+          git add -A srs mrs README.md
 
           if git diff --cached --quiet; then
             echo "No changes to commit."
