@@ -11,7 +11,7 @@ SECTIONS = (
     ("JSON", "json", "*.json"),
     ("SRS", "srs", "*.srs"),
     ("MRS", "mrs", "*.mrs"),
-    ("YAML", "mrs", "*.yaml"),
+    ("YAML", "yaml", "*.yaml"),
 )
 
 

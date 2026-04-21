@@ -30,10 +30,10 @@
 
 ## YAML
 
-- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/mrs/android-fcm.yaml`
-- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/mrs/bypass-apps.yaml`
-- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/mrs/bypass-domains.yaml`
-- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/mrs/bypass-ips.yaml`
-- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/mrs/encrypted-dns.yaml`
-- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/mrs/games.yaml`
-- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/mrs/torrent-clients.yaml`
+- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/yaml/android-fcm.yaml`
+- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/yaml/bypass-apps.yaml`
+- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/yaml/bypass-domains.yaml`
+- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/yaml/bypass-ips.yaml`
+- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/yaml/encrypted-dns.yaml`
+- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/yaml/games.yaml`
+- `https://cdn.jsdelivr.net/gh/Adam-Sizzler/sb-rule-set@main/yaml/torrent-clients.yaml`

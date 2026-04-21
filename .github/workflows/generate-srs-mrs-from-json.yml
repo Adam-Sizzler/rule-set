@@ -9,7 +9,7 @@ on:
       - "json/*.json"
       - "srs/*.srs"
       - "mrs/*.mrs"
-      - "mrs/*.yaml"
+      - "yaml/*.yaml"
       - "README.md"
       - "scripts/generate-readme.py"
       - "scripts/singbox-json-to-mihomo-yaml.py"
@@ -52,10 +52,10 @@ jobs:
 
       - name: Generate srs, mrs and yaml from existing json files
         run: |
-          mkdir -p json srs mrs
+          mkdir -p json srs mrs yaml
           find srs -maxdepth 1 -type f -name '*.srs' -delete
-          find mrs -maxdepth 1 -type f -name '*.yaml' -delete
           find mrs -maxdepth 1 -type f -name '*.mrs' -delete
+          find yaml -maxdepth 1 -type f -name '*.yaml' -delete
 
           shopt -s nullglob
           json_files=(json/*.json)
@@ -69,7 +69,7 @@ jobs:
             srs_out="srs/${name}.srs"
             domain_mrs_out="mrs/${name}-domain.mrs"
             ipcidr_mrs_out="mrs/${name}-ipcidr.mrs"
-            yaml_out="mrs/${name}.yaml"
+            yaml_out="yaml/${name}.yaml"
             domain_src="$(mktemp)"
             ipcidr_src="$(mktemp)"
 
@@ -151,13 +151,14 @@ jobs:
         run: |
           ls -lah srs
           ls -lah mrs
+          ls -lah yaml
 
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add -A srs mrs README.md
+          git add -A srs mrs yaml README.md
 
           if git diff --cached --quiet; then
             echo "No changes to commit."
