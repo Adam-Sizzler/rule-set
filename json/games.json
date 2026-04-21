@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "type": "logical",
+      "mode": "or",
+      "rules": [
+        {
+          "process_name": [
+            "Among Us.exe",
+            "ApexLauncher.exe",
+            "r5apex_dx12.exe",
+            "Content Warning.exe",
+            "cs2.exe",
+            "eurotrucks2.exe",
+            "amtrucks.exe",
+            "PartyAnimals.exe",
+            "PEAK.exe",
+            "ExecPubg.exe",
+            "javaw.exe",
+            "Minecraft.exe",
+            "FragPunk.exe",
+            "dota2.exe",
+            "deadlock.exe",
+            "altv.exe",
+            "altv-webengine.exe",
+            "FiveM.exe",
+            "tf.exe",
+            "tf_win64.exe",
+            "hl2.exe",
+            "RainbowSix.exe",
+            "osu!.exe",
+            "Quaver.exe",
+            "VALORANT-Win64-Shipping.exe",
+            "BsgLauncher.exe",
+            "EscapeFromTarkov.exe",
+            "EscapeFromTarkovArena.exe",
+            "HuntGame.exe",
+            "start_protected_game.exe",
+            "BattleBitEAC.exe",
+            "EasyAntiCheat.exe",
+            "TslGame_BE.exe",
+            "TslGame_ZK.exe",
+            "vgc.exe",
+            "vgm.exe",
+            "denuvo-anti-cheat-update-service.exe",
+            "EscapeFromTarkovArena_BE.exe",
+            "EscapeFromTarkov_BE.exe",
+            "EasyAntiCheat_EOS.exe",
+            "faceitservice.exe",
+            "faceitclient.exe",
+            "SGuard64.exe",
+            "SGuardSvc64.exe",
+            "SGuardUpdate64.exe",
+            "ACE-Service64.exe",
+            "helldivers2.exe",
+            "crs-handler.exe",
+            "Discovery.exe",
+            "Discovery-d.exe",
+            "UAGame.exe",
+            "MarvelRivals_Launcher.exe",
+            "Marvel-Win64-Shipping.exe",
+            "Overwatch.exe",
+            "Battle.net.exe",
+            "BlizzardBrowser.exe",
+            "Phasmophobia.exe",
+            "GenshinImpact.exe",
+            "ZenlessZoneZero.exe",
+            "StarRail.exe",
+            "BH3.exe",
+            "ZFGameBrowser.exe",
+            "HYUpdater.exe",
+            "HYPHelper.exe",
+            "HYP.exe",
+            "UmamusumePrettyDerby.exe",
+            "Wuthering Waves.exe",
+            "KRWebView.exe",
+            "KRSDKExternal.exe",
+            "MIMESIS.exe"
+          ]
+        },
+        {
+          "process_path_regex": [
+            "(?i).*Win64-Shipping.*",
+            "Aimbeast.*",
+            "BattleBit.*",
+            "TslGame.*",
+            "DeadByDaylight.*",
+            ".*GTA5.*",
+            "(?i).*ragemp.*",
+            "(?i).*Majestic.*",
+            "(?i).*Rockstar.*",
+            "(?i).*SocialClub.*",
+            "(?i).*vanguard.*",
+            "(?i).*RustClient.*",
+            "EscapeFromTarkov.*"
+          ]
+        },
+        {
+          "domain_suffix": [
+            "codefusion.technology",
+            "cybershoke.net",
+            "faceit-cdn.net",
+            "faceit.com"
+          ]
+        }
+      ]
+    }
+  ]
+}

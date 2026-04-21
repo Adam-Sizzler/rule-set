@@ -1,4 +1,4 @@
-name: Generate SRS and MRS from JSON
+name: Generate SRS, MRS and YAML from JSON
 
 on:
   schedule:
@@ -7,6 +7,7 @@ on:
   push:
     paths:
       - "json/*.json"
+      - "scripts/singbox-json-to-mihomo-yaml.py"
       - ".github/workflows/generate-srs-mrs-from-json.yml"
 
 concurrency:
@@ -44,7 +45,7 @@ jobs:
           sudo mv ./mihomo /usr/local/bin/mihomo
           sudo chmod +x /usr/local/bin/mihomo
 
-      - name: Generate srs and mrs from existing json files
+      - name: Generate srs, mrs and yaml from existing json files
         run: |
           mkdir -p json srs mrs
           find srs -maxdepth 1 -type f -name '*.srs' -delete
@@ -63,6 +64,7 @@ jobs:
             srs_out="srs/${name}.srs"
             domain_mrs_out="mrs/${name}-domain.mrs"
             ipcidr_mrs_out="mrs/${name}-ipcidr.mrs"
+            yaml_out="mrs/${name}.yaml"
             domain_src="$(mktemp)"
             ipcidr_src="$(mktemp)"
 
@@ -95,14 +97,43 @@ jobs:
               ' "$json_file" | sed 's/^/- /'
             } > "$ipcidr_src"
 
-            if [ "$(grep -c '^- ' "$domain_src" || true)" -gt 0 ]; then
-              mihomo convert-ruleset domain yaml "$domain_src" "$domain_mrs_out"
-              test -s "$domain_mrs_out"
+            domain_count="$(grep -c '^- ' "$domain_src" || true)"
+            ipcidr_count="$(grep -c '^- ' "$ipcidr_src" || true)"
+            classical_count="$(jq -r '
+              def toarr: if . == null then [] elif (type=="array") then . else [.] end;
+              [
+                .. | objects |
+                (.process_name? // empty),
+                (.process_name_regex? // empty),
+                (.process_path? // empty),
+                (.process_path_regex? // empty),
+                (.package_name? // empty)
+              ] | map(toarr[]) | length
+            ' "$json_file")"
+
+            if python3 scripts/singbox-json-to-mihomo-yaml.py "$json_file" "$yaml_out"; then
+              test -s "$yaml_out"
+            else
+              rm -f "$yaml_out"
+              echo "Skipped Mihomo YAML for ${json_file}: unsupported sing-box rule semantics"
             fi
 
-            if [ "$(grep -c '^- ' "$ipcidr_src" || true)" -gt 0 ]; then
+            if [ "$classical_count" -gt 0 ]; then
+              echo "Skipped MRS for ${json_file}: Mihomo MRS supports only domain/ipcidr, use ${yaml_out}"
+            elif [ "$domain_count" -gt 0 ]; then
+              mihomo convert-ruleset domain yaml "$domain_src" "$domain_mrs_out"
+              test -s "$domain_mrs_out"
+            else
+              echo "Skipped domain MRS for ${json_file}: no domain/domain_suffix rules"
+            fi
+
+            if [ "$classical_count" -eq 0 ] && [ "$ipcidr_count" -gt 0 ]; then
               mihomo convert-ruleset ipcidr yaml "$ipcidr_src" "$ipcidr_mrs_out"
               test -s "$ipcidr_mrs_out"
+            elif [ "$classical_count" -gt 0 ]; then
+              true
+            else
+              echo "Skipped ipcidr MRS for ${json_file}: no ip_cidr rules"
             fi
 
             rm -f "$domain_src" "$ipcidr_src"
