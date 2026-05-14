@@ -98,9 +98,18 @@
         "s16.upd.kaspersky.com",
         "s17.upd.kaspersky.com",
         "s18.upd.kaspersky.com",
-        "s19.upd.kaspersky.com"
+        "s19.upd.kaspersky.com",
+        "digiseller.me",
+        "stepik.org",
+        "aliexpress.ru"
+      ],
+      "domain_keyword": [
+        "browserscan",
+        "surfsharkdns",
+        "porno"
       ],
       "domain_suffix": [
+        "ip-api.com",
         ".moscow",
         ".psk",
         ".ru",
@@ -340,7 +349,6 @@
         "mosmetro.tech",
         "mp.world",
         "mradx.net",
-        "mvk.com",
         "my-manager-account.com",
         "mycdn.me",
         "naydex.net",
@@ -468,6 +476,7 @@
         "vk-cdn.net",
         "vk-portal.net",
         "vk.cc",
+        "mvk.com",
         "vk.com",
         "vk.company",
         "vk.design",
