@@ -27,6 +27,8 @@
             "mediaget.exe",
             "mediaget_crashpad_handler.exe",
             "uFiler.exe",
+            "TorrServer-windows-386.exe",
+            "TorrServer-windows-amd64.exe",
             "Transmission",
             "qBittorrent",
             "BitTorrent Web",
@@ -41,6 +43,7 @@
             "BitLord",
             "BitComet",
             "bitlord",
+            "torrserver",
             "tribler",
             "WebTorrent",
             "WebTorrent Helper",
@@ -94,7 +97,10 @@
             "com.delphicoder.flud.paid",
             "org.transdroid.lite",
             "idm.internet.download.manager",
-            "com.bitcomet.android"
+            "com.bitcomet.android",
+            "org.equeim.tremotesf",
+            "ru.yourok.torrserve",
+            "com.gianlu.aria2app",
           ]
         }
       ]
