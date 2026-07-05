@@ -76,6 +76,7 @@ payload:
   - "PROCESS-NAME,WowClassic.exe"
   - "PROCESS-NAME,Wuthering Waves.exe"
   - "PROCESS-NAME,ZFGameBrowser.exe"
+  - "PROCESS-NAME,templol.exe"
   - "PROCESS-PATH-REGEX,(?i).*Win64-Shipping.*"
   - "PROCESS-PATH-REGEX,Aimbeast.*"
   - "PROCESS-PATH-REGEX,BattleBit.*"
