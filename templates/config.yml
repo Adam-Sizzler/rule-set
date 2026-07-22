@@ -77,27 +77,30 @@ hosts:
 
 dns:
   enable: true
-  ipv6: false
   prefer-h3: false
-  use-system-hosts: true
+  ipv6: false
   respect-rules: true
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - rule-set:geosite-private
 
   default-nameserver:
-    - https://1.1.1.1/dns-query
-    - https://8.8.8.8/dns-query
+    - https://1.1.1.1/dns-query#DIRECT
+    - https://8.8.8.8/dns-query#DIRECT
   nameserver:
     - 1.1.1.1#Proxy
     - 8.8.8.8#Proxy
   proxy-server-nameserver:
-    - https://1.1.1.1/dns-query
-    - https://8.8.8.8/dns-query
+    - https://1.1.1.1/dns-query#DIRECT
+    - https://8.8.8.8/dns-query#DIRECT
   direct-nameserver:
-    - 8.8.8.8
-    - 77.88.8.8
-  direct-nameserver-follow-policy: false
+    - https://1.1.1.1/dns-query#DIRECT
+    - https://8.8.8.8/dns-query#DIRECT
+    - https://77.88.8.8/dns-query#DIRECT
+    - system
 
+  direct-nameserver-follow-policy: false
   nameserver-policy:
     rule-set:geosite-private:
       - system
