@@ -228,7 +228,7 @@ rule-providers:
 
 # Правила
 rules:
-  # Блокировка приложений Android
+  # Блокировка приложений Android (пример)
   - PROCESS-NAME,com.hybridparking.game,REJECT-DROP
 
   # Локальная сеть в DIRECT
