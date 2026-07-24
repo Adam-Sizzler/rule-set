@@ -3,7 +3,7 @@ allow-lan: false
 mode: rule
 log-level: silent
 ipv6: false
-find-process-mode: always
+find-process-mode: strict
 unified-delay: true
 tcp-concurrent: true
 keep-alive-interval: 30
