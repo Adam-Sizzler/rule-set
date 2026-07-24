@@ -1,9 +1,9 @@
-mixed-port: 7890
 allow-lan: false
+log-level: warning
 mode: rule
-log-level: silent
 ipv6: false
 find-process-mode: strict
+enable-process: true
 unified-delay: true
 tcp-concurrent: true
 keep-alive-interval: 30
@@ -15,7 +15,7 @@ profile:
 sniffer:
   enable: true
   parse-pure-ip: true
-  override-destination: false
+  override-destination: true
   sniff:
     HTTP:
       ports: [80, 8080-8880]
@@ -80,10 +80,7 @@ dns:
   prefer-h3: false
   ipv6: false
   respect-rules: true
-  enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.1/16
-  fake-ip-filter:
-    - rule-set:geosite-private
+  enhanced-mode: redir-host
 
   default-nameserver:
     - https://1.1.1.1/dns-query#DIRECT
